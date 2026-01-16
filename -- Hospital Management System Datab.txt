@@ -1,0 +1,72 @@
+-- Hospital Management System Database
+
+CREATE DATABASE hospital_management;
+USE hospital_management;
+
+-- Doctor Table
+CREATE TABLE doctor (
+    doctor_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(30) NOT NULL,
+    age INT,
+    gender VARCHAR(10)
+);
+
+-- Room Table
+CREATE TABLE room (
+    room_no INT PRIMARY KEY,
+    room_type CHAR(10) NOT NULL,
+    status CHAR(10)
+);
+
+-- Patient Table
+CREATE TABLE patient (
+    patient_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(30) NOT NULL,
+    age INT,
+    gender VARCHAR(30),
+    address VARCHAR(30),
+    disease VARCHAR(30) NOT NULL,
+    doctor_id INT,
+    FOREIGN KEY (doctor_id) REFERENCES doctor(doctor_id)
+);
+
+-- Patient Admission Table
+CREATE TABLE patient_admission (
+    patient_id INT PRIMARY KEY,
+    room_no INT,
+    date_of_ads DATE,
+    date_of_dis DATE,
+    lab_no INT,
+    FOREIGN KEY (room_no) REFERENCES room(room_no)
+);
+
+-- Lab Table
+CREATE TABLE lab (
+    lab_no INT PRIMARY KEY,
+    patient_id INT,
+    doctor_id INT,
+    date DATE,
+    amount DECIMAL(10,2),
+    FOREIGN KEY (patient_id) REFERENCES patient(patient_id),
+    FOREIGN KEY (doctor_id) REFERENCES doctor(doctor_id)
+);
+
+-- Lab Test Table
+CREATE TABLE lab_test (
+    patient_id INT PRIMARY KEY,
+    date DATE,
+    lab_no INT,
+    FOREIGN KEY (lab_no) REFERENCES lab(lab_no)
+);
+
+-- Billing Table
+CREATE TABLE billing (
+    bill_no INT AUTO_INCREMENT PRIMARY KEY,
+    doctor_charge DECIMAL(10,2) NOT NULL,
+    room_charge DECIMAL(10,2) NOT NULL,
+    no_of_days INT,
+    lab_charge DECIMAL(10,2) NOT NULL,
+    total_amount DECIMAL(10,2) NOT NULL,
+    patient_id INT,
+    FOREIGN KEY (patient_id) REFERENCES patient(patient_id)
+);
